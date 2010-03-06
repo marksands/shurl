@@ -11,15 +11,24 @@ URL_SHORTENERS = []
   "http://tinyarro.ws/api-create.php?url=",
   "http://idek.net/shorten/?idek-api=true&idek-ref=your_app&idek-anchor=anchortag&idek-url=",
   "http://chilp.it/api.php?url=",
-  "http://krz.ch/?module=ShortURL&file=Add&url=" } do |url|
+  "http://krz.ch/?module=ShortURL&file=Add&url=" }.each do |url|
   URL_SHORTENERS << url;
 end
 
+def shorten_url url
   url = url_encode(url);
   URL_SHORTENERS.each do |URL|
-    @mini << open( URL + url )
+    @mini << open( URL + url ).read
   end
+  @mini.sort_by { |url| url.length } [0]
+end
 
 def url_encode(url)
   URI.encode(url)
 end
+
+# minified = shorten_url( blah )
+def self.shorten_url url
+  open('http://is.gd/api.php?longurl=' + url).read
+end
+  
