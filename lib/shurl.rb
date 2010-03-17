@@ -1,34 +1,29 @@
-http://tinyarro.ws/info/api # http://tinyarro.ws/api-create.php?url=http://www.example.com
-http://is.gd/api_info.php # http://is.gd/api.php?longurl=http://www.example.com
-http://krz.ch/?module=Pages&id=27 # http://krz.ch/?module=ShortURL&file=Add&url=http%3A%2F%2Fvergleiche.ch%2Fmp3player%2Fueber_50gb_speicher%2Fapple_ipod_classic_120gb_silber_mb562
-http://idek.net/info/url-shortening-api # http://idek.net/shorten/?idek-api=true&idek-ref=your_app&idek-anchor=anchortag&idek-url=http://yourlonglink.com
-http://chilp.it/ # Shortening: http://chilp.it/api.php?url=http://www.example.com
-# http://ow.ly/url/shorten-url # probably not... it's not out yet
-# http://code.google.com/p/bitly-api/wiki/ApiDocumentation # have to have api key.. :\
+# http://ow.ly/url/shorten-url -- not out yet
+# http://api.bit.ly/shorten?version=2.0.1&login=shurl&apiKey=R_a08944fe85b63e4e35dd04d78d180611&longUrl=
+require 'net/http'
 
-URL_SHORTENERS = []
-%{"http://is.gd/api.php?longurl=",
-  "http://tinyarro.ws/api-create.php?url=",
-  "http://idek.net/shorten/?idek-api=true&idek-ref=your_app&idek-anchor=anchortag&idek-url=",
-  "http://chilp.it/api.php?url=",
-  "http://krz.ch/?module=ShortURL&file=Add&url=" }.each do |url|
-  URL_SHORTENERS << url;
-end
+module Shurl
+  class Shortener
+    def initialize
+      @@mini = []
+      @@shorteners = %w{http://is.gd/api.php?longurl=
+        http://tinyarro.ws/api-create.php?url=
+        http://idek.net/shorten/?idek-api=true&idek-ref=your_app&idek-anchor=anchortag&idek-url=
+        http://chilp.it/api.php?url= }
+    end
 
-def shorten_url url
-  url = url_encode(url);
-  URL_SHORTENERS.each do |URL|
-    @mini << open( URL + url ).read
+    def shorten(url)
+      @@shorteners.each do |u|
+        @@mini << Net::HTTP.get_response(URI.parse(u+urle(url))).body
+      end
+      @@mini.sort_by { |url| url.length } [0]
+    end
+    
+    private 
+    
+    def url_encode(url)
+      URI.encode(url)
+    end
+    alias_method :urle, :url_encode
   end
-  @mini.sort_by { |url| url.length } [0]
 end
-
-def url_encode(url)
-  URI.encode(url)
-end
-
-# minified = shorten_url( blah )
-def self.shorten_url url
-  open('http://is.gd/api.php?longurl=' + url).read
-end
-  
