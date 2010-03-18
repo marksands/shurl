@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{shurl}
-  s.version = "0.0.1"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Mark Sands"]
@@ -13,12 +13,17 @@ Gem::Specification.new do |s|
   s.description = %q{A url shortener that queries a lot of APIs and returns the shortest url evar.}
   s.email = %q{marksands07@gmail.com}
   s.extra_rdoc_files = [
-    "README.md"
+    "LICENSE",
+     "README.markdown"
   ]
   s.files = [
     ".gitignore",
-     "README.md",
-     "lib/shurl.rb"
+     "Rakefile",
+     "VERSION",
+     "lib/shurl.rb",
+     "shurl.gemspec",
+     "test/test_helper.rb",
+     "test/test_shurl.rb"
   ]
   s.homepage = %q{http://github.com/marksands/shurl}
   s.rdoc_options = ["--charset=UTF-8"]
