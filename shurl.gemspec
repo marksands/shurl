@@ -18,6 +18,8 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "LICENSE",
+     "README.markdown",
      "Rakefile",
      "VERSION",
      "lib/shurl.rb",
